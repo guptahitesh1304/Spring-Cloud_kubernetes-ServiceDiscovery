@@ -1,0 +1,33 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: dctm-service
+spec:
+  selector:
+    app: dctm-service
+  ports:
+    - protocol: TCP
+      port: 8080
+      nodePort: 30004
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dctm-service
+spec:
+  selector:
+    matchLabels:
+      app: dctm-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dctm-service
+    spec:
+      containers:
+        - name: dctm-service
+          image: dctm-service
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
